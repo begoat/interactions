@@ -39,7 +39,11 @@ export default function prompt(message, _default, modalConfig) {
         onOk={async (...args) => {
           let result;
           if (modalConfig && isFunction(modalConfig.onOk)) {
-            result = await modalConfig.onOk(...args);
+            try {
+              result = await modalConfig.onOk(...args);
+            } catch (e) {
+              result = false;
+            }
           }
           resolve(...args);
 
@@ -47,7 +51,11 @@ export default function prompt(message, _default, modalConfig) {
         }}
         onCancel={async isSubmitLoading => {
           if (modalConfig && isFunction(modalConfig.onCancel)) {
-            await modalConfig.onCancel(isSubmitLoading);
+            try {
+              await modalConfig.onCancel(isSubmitLoading);
+            } catch (e) {
+              console.log('e', e);
+            }
           }
           resolve(null);
         }}

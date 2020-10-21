@@ -14,7 +14,11 @@ export default function alert(message, modalConfig) {
         onOk={async () => {
           let result;
           if (modalConfig && isFunction(modalConfig.onOk)) {
-            result = await modalConfig.onOk();
+            try {
+              result = await modalConfig.onOk();
+            } catch (e) {
+              result = false;
+            }
           }
           resolve();
 

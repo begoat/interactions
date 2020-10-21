@@ -14,7 +14,11 @@ export default function confirm(message, modalConfig) {
         onOk={async () => {
           let result;
           if (modalConfig && isFunction(modalConfig.onOk)) {
-            result = await modalConfig.onOk();
+            try {
+              result = await modalConfig.onOk();
+            } catch (e) {
+              result = false;
+            }
           }
           resolve(true);
 
@@ -22,7 +26,11 @@ export default function confirm(message, modalConfig) {
         }}
         onCancel={async isSubmitLoading => {
           if (modalConfig && isFunction(modalConfig.onCancel)) {
-            await modalConfig.onCancel(isSubmitLoading);
+            try {
+              await modalConfig.onCancel(isSubmitLoading);
+            } catch (e) {
+              console.log('e', e);
+            }
           }
           resolve(false);
         }}
